@@ -32,12 +32,9 @@ public class SecurityConfig {
             HttpSecurity http) throws Exception {
 
         http
-
             // CORS
             .cors(cors ->
-                    cors.configurationSource(
-                            corsConfigurationSource()
-                    )
+                cors.configurationSource(corsConfigurationSource())
             )
 
             // Disable CSRF because we are using JWT
@@ -45,9 +42,9 @@ public class SecurityConfig {
 
             // Stateless JWT authentication
             .sessionManagement(session ->
-                    session.sessionCreationPolicy(
-                            SessionCreationPolicy.STATELESS
-                    )
+                session.sessionCreationPolicy(
+                    SessionCreationPolicy.STATELESS
+                )
             )
 
             .authorizeHttpRequests(auth -> auth
@@ -58,9 +55,9 @@ public class SecurityConfig {
 
                 // SWAGGER
                 .requestMatchers(
-                        "/swagger-ui/**",
-                        "/swagger-ui.html",
-                        "/v3/api-docs/**"
+                    "/swagger-ui/**",
+                    "/swagger-ui.html",
+                    "/v3/api-docs/**"
                 )
                 .permitAll()
 
@@ -74,25 +71,25 @@ public class SecurityConfig {
 
                 // DOCTOR SPECIALIZATION APIs
                 .requestMatchers(
-                        HttpMethod.GET,
-                        "/doctor/specializations"
+                    HttpMethod.GET,
+                    "/doctor/specializations"
                 )
                 .hasAnyRole(
-                        "PATIENT",
-                        "DOCTOR",
-                        "ADMIN",
-                        "RECEPTIONIST"
+                    "PATIENT",
+                    "DOCTOR",
+                    "ADMIN",
+                    "RECEPTIONIST"
                 )
 
                 .requestMatchers(
-                        HttpMethod.GET,
-                        "/doctor/specialization/**"
+                    HttpMethod.GET,
+                    "/doctor/specialization/**"
                 )
                 .hasAnyRole(
-                        "PATIENT",
-                        "DOCTOR",
-                        "ADMIN",
-                        "RECEPTIONIST"
+                    "PATIENT",
+                    "DOCTOR",
+                    "ADMIN",
+                    "RECEPTIONIST"
                 )
 
                 // DOCTOR
@@ -130,65 +127,62 @@ public class SecurityConfig {
 
             // JWT FILTER
             .addFilterBefore(
-                    jwtFilter,
-                    UsernamePasswordAuthenticationFilter.class
+                jwtFilter,
+                UsernamePasswordAuthenticationFilter.class
             );
 
         return http.build();
     }
-
 
     // CORS CONFIGURATION
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
 
         CorsConfiguration configuration =
-                new CorsConfiguration();
+            new CorsConfiguration();
 
-        // Local development + deployed Vercel frontend
+        // Local development + deployed frontend URLs
         configuration.setAllowedOrigins(
-                List.of(
-                        "http://localhost:5173",
-                        "https://hospital-managment-system-frontend-phi.vercel.app"
-                )
+            List.of(
+                "http://localhost:5173",
+                "https://thilakhospital.vercel.app",
+                "https://hospital-managment-system-frontend-phi.vercel.app"
+            )
         );
 
         configuration.setAllowedMethods(
-                List.of(
-                        "GET",
-                        "POST",
-                        "PUT",
-                        "DELETE",
-                        "PATCH",
-                        "OPTIONS"
-                )
+            List.of(
+                "GET",
+                "POST",
+                "PUT",
+                "DELETE",
+                "PATCH",
+                "OPTIONS"
+            )
         );
 
         configuration.setAllowedHeaders(
-                List.of("*")
+            List.of("*")
         );
 
         configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source =
-                new UrlBasedCorsConfigurationSource();
+            new UrlBasedCorsConfigurationSource();
 
         source.registerCorsConfiguration(
-                "/**",
-                configuration
+            "/**",
+            configuration
         );
 
         return source;
     }
 
-
     // PASSWORD ENCODER
     @Bean
     public PasswordEncoder passwordEncoder() {
-
         return new BCryptPasswordEncoder();
     }
-
 
     // AUTHENTICATION MANAGER
     @Bean
