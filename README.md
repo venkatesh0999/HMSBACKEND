@@ -18,23 +18,31 @@ ADMIN, DOCTOR, NURSE, RECEPTIONIST, PATIENT, PHARMACIST, LAB_INCHARGE, BED_INCHA
 
 ## Database
 
-MySQL database:
-hospital_management_db
+PostgreSQL database: `hospital_management_db`
 
-Default application configuration:
-- Host: localhost
-- Port: 3306
-- Username: root
-- Password: empty
+Default local configuration:
+- Host: `localhost`
+- Port: `5432`
+- Username: `postgres`
+- Password: `postgres` (change this to your local PostgreSQL password)
 
-If your MySQL password is different, update:
-src/main/resources/application.properties
+The datasource is configurable with environment variables:
+- `DATABASE_URL` (default: `jdbc:postgresql://localhost:5432/hospital_management_db`)
+- `DATABASE_USERNAME` (default: `postgres`)
+- `DATABASE_PASSWORD` (default: `postgres`)
+
+Create the database before starting the application:
+```sql
+CREATE DATABASE hospital_management_db;
+```
+
+Java 17 is configured in Maven, Eclipse/STS project settings, and Docker.
 
 ## Run
 
 1. Open as a Maven project in Eclipse/STS/IntelliJ.
-2. Make sure MySQL is running.
-3. Update database username/password if required.
+2. Make sure PostgreSQL is running.
+3. Set `DATABASE_USERNAME` and `DATABASE_PASSWORD` if your local credentials differ.
 4. Run HospitalManagementSystemApplication.java.
 
 Swagger:
